@@ -15,27 +15,46 @@ func main() {
 	}
 
 	dataSlice := strings.Split(string(data), "\n")
-	var counter, sum, highestSum, highestSumPosition int
+	var sum, highestSum int
+	topElvesSlice := []int{0, 0, 0} // initialize with 3 junk values to find top three highest elves
 
-	for _, element := range dataSlice {
-		counter++
-		if element != "" {
-			// fmt.Println(element)
-			elementInt, err := strconv.Atoi(element)
+	for _, elf := range dataSlice {
+		if elf != "" { // new line separated
+			elfInt, err := strconv.Atoi(elf)
 			if err != nil {
 				panic(err)
 			}
-			sum = sum + elementInt
+			sum = sum + elfInt
+
 		} else {
-			if sum > highestSum {
-				fmt.Println("new highest sum found!", highestSum)
+			var counter, smallestElfPosition int
+			potentialSmallestElf := topElvesSlice[0] // just test if the first slice element is the smallest
+
+			for _, topElves := range topElvesSlice[1:] {
+				counter++
+				if topElves < potentialSmallestElf {
+					potentialSmallestElf = topElves
+					smallestElfPosition = counter
+					fmt.Println("Smallest current elf:", topElves, "position", smallestElfPosition)
+				}
+			}
+			if sum > potentialSmallestElf {
+				fmt.Println("new higher sum found!", highestSum)
 				highestSum = sum
-				highestSumPosition = counter
+				topElvesSlice[smallestElfPosition] = highestSum
+
+				fmt.Println("Top elves:", topElvesSlice)
 			}
 			sum = 0
-		}
+			counter = 0
+			smallestElfPosition = 0
 
+		}
 	}
 
-	fmt.Println("done", highestSum, highestSumPosition)
+	var totalElfCalories int
+	for _, elves := range topElvesSlice {
+		totalElfCalories += elves
+	}
+	fmt.Println("done", totalElfCalories)
 }

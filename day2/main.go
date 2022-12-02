@@ -13,6 +13,7 @@ func main() {
 		panic(err)
 	}
 
+	// part 1 logic
 	// strategy guide is outcome. determine what points outcome gives
 	// A - rock  (1 pt for choosing this)
 	// B - paper (2 pts for choosing)
@@ -25,6 +26,11 @@ func main() {
 	// draw = +3
 	// lose = 0
 
+	// part 2 logic
+	// X = I must lose
+	// Y = I must draw
+	// Z = I must win
+
 	var totalPoints int
 	dataSlice := strings.Split(string(data), "\n")
 	for _, round := range dataSlice {
@@ -34,12 +40,12 @@ func main() {
 		switch roundSlice[0] {
 		case "A": // if opponent plays rock
 			switch roundSlice[1] {
-			case "X":
-				totalPoints += 4 // rock draw
-			case "Y":
-				totalPoints += 8 // paper win
-			case "Z":
+			case "X": // must lose, play scissors
 				totalPoints += 3 // scissors lose
+			case "Y": // must draw, play rock
+				totalPoints += 4 // rock draw
+			case "Z": // must win, paper win
+				totalPoints += 8 // paper win
 			}
 		case "B": // paper
 			switch roundSlice[1] {
@@ -53,11 +59,11 @@ func main() {
 		case "C": // scissors
 			switch roundSlice[1] {
 			case "X":
-				totalPoints += 7 // rock win
-			case "Y":
 				totalPoints += 2 // paper lose
-			case "Z":
+			case "Y":
 				totalPoints += 6 // scissors draw
+			case "Z":
+				totalPoints += 7 // rock win
 			}
 
 		}

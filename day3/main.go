@@ -6,6 +6,23 @@ import (
 	"strings"
 )
 
+func getMatchValue(char rune) (value int) {
+
+	// this may be stupid but we can use ASCII position to get alphabetical index
+	// like if it's an uppercase char (A = 65, we subtract 64 to get index 1)
+	// for lowercase, subtract 96
+
+	if strings.ToUpper(string(char)) == string(char) {
+		// this would be minus 64 from ascii index but uppercase is worth 27 through 52
+		// so only minus (64-26) = 38
+		value = int(char) - 38
+	} else { // lowercase
+		value = int(char) - 96
+	}
+	return value
+
+}
+
 func main() {
 	// read file
 	input, err := os.ReadFile("input")
@@ -19,33 +36,24 @@ func main() {
 
 	inputSlice := strings.Split(string(input), "\n")
 	var points int
-	for _, compartment := range inputSlice {
+	for counter := 0; counter <= len(inputSlice); counter += 3 {
 		var value int
-		firstHalf := len(compartment) / 2
+		if counter < len(inputSlice) {
 
-		// iterate through chars in first half of string
-		for _, char := range compartment[0:firstHalf] {
-			// compare each char in first half to second half of string
-			result := strings.Contains(compartment[firstHalf:], string(char))
+			// iterate through chars in first string, compare to second. must have match there to continue
+			for _, char := range inputSlice[counter] {
+				// compare each char in first half to second half of string
+				result := strings.Contains(inputSlice[counter+1], string(char))
 
-			if result {
-				fmt.Println(compartment)
-				// this may be stupid but we can use ASCII position to get alphabetical index
-				// like if it's an uppercase char (A = 65, we subtract 64 to get index 1)
-				// for lowercase, subtract 96
+				if result {
+					// we then need to see if our char is also in the last group member
+					result = strings.Contains(inputSlice[counter+2], string(char))
 
-				if strings.ToUpper(string(char)) == string(char) {
-					// this would be minus 64 from ascii index but uppercase is worth 27 through 52
-					// so only minus (64-26) = 38
-					value = int(char) - 38
-					fmt.Println("upper case found", string(char), points, value)
-				} else { // lowercase
-					value = int(char) - 96
-					fmt.Println("lower case found", string(char), points, value)
+					if result {
+						value = getMatchValue(char)
+					}
 				}
-
 			}
-
 		}
 		points += value
 	}

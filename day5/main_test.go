@@ -6,7 +6,7 @@ import (
 
 func TestPartTwo(t *testing.T) {
 
-	input := readInput("testInput")
+	input := readInput("testinput")
 
 	got := partOne(input)
 	want := "CMZ"

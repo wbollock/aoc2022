@@ -17,6 +17,8 @@ func readInput(file string) (input []byte) {
 	return input
 }
 
+// this isn't my code, I couldn't figure out the problem and wanted to analyze a different solution
+
 func partOne(input []byte) (topCrates string) {
 	// first step:
 	// take in crates and their order as variable

@@ -27,12 +27,17 @@ func compareElfs(biggerElfRange string, smallerElfRange string) (matchFound bool
 
 }
 
-func main() {
+func readInput(file string) (input []byte) {
 	// read file
-	input, err := os.ReadFile("input")
+	input, err := os.ReadFile(file)
 	if err != nil {
 		panic(err)
 	}
+
+	return input
+}
+
+func partTwo(input []byte) int {
 
 	// part 1 logic
 	// pairs 1-3,4-6 are {1,2,3},{4,5,6}
@@ -121,5 +126,13 @@ func main() {
 		}
 
 	}
-	fmt.Println("Total matches:", matches)
+	return matches
+
+}
+
+func main() {
+
+	input := readInput("input")
+	answer := partTwo(input)
+	fmt.Println("Total matches:", answer)
 }
